@@ -1,0 +1,72 @@
+# TCP Port and Ping Checker
+# Python Dependencies
+
+# System resource monitoring (required)
+psutil>=5.8.0
+
+# Optional development dependencies (uncomment if needed):
+# colorama>=0.4.4          # Colored console output
+# tqdm>=4.64.0             # Progress bars
+# click>=8.0.0             # Enhanced CLI interface
+
+# Standard Python libraries (no installation required):
+# - socket: TCP port checking
+# - subprocess: Ping command execution
+# - platform: OS detection
+# - threading: Multi-threading operations
+# - concurrent.futures: ThreadPoolExecutor
+# - datetime: Date/time operations
+# - time: Timing and delays
+# - os: File and system operations
+# - collections: deque data structure
+# - signal: Signal handling (Ctrl+C)
+# - argparse: Command line argument parsing
+
+# Python version requirement: 3.6+ (recommended: 3.8+)
+
+# Installation instructions:
+# pip install -r requirements.txt
+# or simply:
+# pip install psutil
+
+# Development environment additional packages:
+# pytest>=6.0.0           # Unit testing
+# flake8>=4.0.0           # Code quality checks
+# black>=22.0.0           # Code formatting
+# mypy>=0.900             # Type checking
+
+# System requirements:
+# - Windows: Windows 7+
+# - Linux: Any modern distribution
+# - macOS: macOS 10.12+
+# - RAM: Minimum 256MB free memory
+# - CPU: Any modern processor
+# - Disk: 50MB free space
+
+# Network requirements:
+# - Ping command execution privileges
+# - TCP socket connection capabilities
+# - Intranet/Internet access (depending on target hosts)
+
+# Security notes:
+# - No data sent to third-party servers
+# - Only monitors local system resources
+# - Network traffic is for testing purposes only
+# - Logs stored locally
+
+# Performance optimizations:
+# - Dynamic thread management
+# - System resource monitoring
+# - Memory-efficient data structures
+# - Minimal CPU usage
+
+# Troubleshooting:
+# If psutil installation fails:
+# - Windows: Microsoft C++ Build Tools may be required
+# - Linux: python3-dev package may be required
+# - macOS: Xcode command line tools may be required
+
+# Alternative installation methods:
+# conda install psutil
+# apt install python3-psutil  (Ubuntu/Debian)
+# yum install python3-psutil  (CentOS/RHEL)
