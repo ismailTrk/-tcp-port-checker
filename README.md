@@ -38,7 +38,16 @@ tcp-port-checker/
 ### Prerequisites
 - **Python 3.6+** (recommended: Python 3.8+)
 
-### Quick Setup
+### Quick Install from PyPI
+```bash
+# Install from PyPI (recommended)
+pip install tcp-port-checker
+
+# Verify installation
+python -m tcp_port_checker --help
+```
+
+### Development Setup
 ```bash
 # Clone the repository
 git clone https://github.com/ismailTrk/tcp-port-checker.git
@@ -48,7 +57,7 @@ cd tcp-port-checker
 pip install -r requirements.txt
 
 # Run with default settings
-python3 main.py
+python -m tcp_port_checker
 ```
 
 ### Dependencies
@@ -61,36 +70,39 @@ All other components use Python standard library.
 ### Basic Usage
 
 ```bash
+# Install the package
+pip install tcp-port-checker
+
 # Check IPs from default file (ip_addresses.txt)
-python3 main.py
+python -m tcp_port_checker
 
 # Quick single IP check
-python3 main.py -ip 192.168.1.1
+python -m tcp_port_checker -ip 192.168.1.1
 
 # Check specific port
-python3 main.py -ip 192.168.1.1 -p 22
+python -m tcp_port_checker -ip 192.168.1.1 -p 22
 
 # Check IPv6 addresses
-python3 main.py -ip "2001:4860:4860::8888,::1" -p 53
+python -m tcp_port_checker -ip "2001:4860:4860::8888,::1" -p 53
 
 # Mixed IPv4, IPv6, and domains
-python3 main.py -ip "8.8.8.8,2001:4860:4860::8888,google.com" -p 443
+python -m tcp_port_checker -ip "8.8.8.8,2001:4860:4860::8888,google.com" -p 443
 ```
 
 ### Advanced Usage
 
 ```bash
 # Use custom IP file
-python3 main.py -f /path/to/custom_ips.txt
+python -m tcp_port_checker -f /path/to/custom_ips.txt
 
 # Custom timeout and workers
-python3 main.py -ip 10.0.0.1 -t 5 --no-monitor -w 20
+python -m tcp_port_checker -ip 10.0.0.1 -t 5 --no-monitor -w 20
 
 # Generate only specific report type
-python3 main.py --txt-only -o scan_results
+python -m tcp_port_checker --txt-only -o scan_results
 
 # Complex scan with custom settings
-python3 main.py -f /var/network_ips.txt -p 9000 -t 10 -o network_audit
+python -m tcp_port_checker -f /var/network_ips.txt -p 9000 -t 10 -o network_audit
 ```
 
 ### CLI Parameters
@@ -205,10 +217,10 @@ THROTTLE_MEMORY_THRESHOLD = 85       # RAM throttle threshold
 ```bash
 # Test with minimal IPs
 echo "127.0.0.1" > test_ips.txt
-python3 main.py -f test_ips.txt
+python -m tcp_port_checker -f test_ips.txt
 
 # Test CLI arguments
-python3 main.py -ip 127.0.0.1 -p 22 --txt-only
+python -m tcp_port_checker -ip 127.0.0.1 -p 22 --txt-only
 ```
 
 ## 🐛 Troubleshooting
