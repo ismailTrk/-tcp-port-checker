@@ -10,9 +10,9 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Event
 
-from config import TXT_OUTPUT_FILE, HTML_OUTPUT_FILE
-from report_generator import ReportGenerator
-from system_monitor import SystemMonitor
+from .config import TXT_OUTPUT_FILE, HTML_OUTPUT_FILE
+from .report_generator import ReportGenerator
+from .system_monitor import SystemMonitor
 
 
 class NetworkChecker:

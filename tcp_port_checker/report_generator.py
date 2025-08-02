@@ -138,16 +138,6 @@ class ReportGenerator:
                 file.write(f"Port Failures           : {summary['port_fail']:3d}\n")
                 file.write("\n")
                 
-                # Status Distribution
-                file.write("📋 STATUS DISTRIBUTION\n")
-                file.write("-" * 70 + "\n")
-                file.write(f"🟢 Full Access: {len(categories['full_access'])} hosts\n")
-                file.write(f"🟡 Ping Only: {len(categories['ping_only'])} hosts\n")
-                file.write(f"🟠 Port Only: {len(categories['port_only'])} hosts\n")
-                file.write(f"🔴 No Access: {len(categories['no_access'])} hosts\n")
-                file.write(f"❌ Errors: {len(categories['errors'])} hosts\n")
-                file.write("\n")
-                
                 # Detailed Results Table
                 file.write("📋 DETAILED RESULTS\n")
                 file.write("-" * 70 + "\n")
@@ -190,51 +180,12 @@ class ReportGenerator:
                 file.write("🔍 ANALYSIS AND INSIGHTS\n")
                 file.write("=" * 70 + "\n")
                 
-                # Network Analysis
-                file.write("🌐 NETWORK ANALYSIS\n")
-                file.write("-" * 20 + "\n")
-                
-                if summary['ping_fail'] > summary['port_fail']:
-                    file.write("• Primary Issue: Network connectivity problems detected\n")
-                    file.write("• Recommendation: Check network infrastructure, routing, and firewalls\n")
-                elif summary['port_fail'] > summary['ping_fail']:
-                    file.write("• Primary Issue: Service availability problems detected\n")
-                    file.write("• Recommendation: Check service configurations and port settings\n")
-                else:
-                    file.write("• Mixed connectivity and service issues detected\n")
-                
-                # Health Assessment
-                file.write("\n🏥 HEALTH ASSESSMENT\n")
-                file.write("-" * 20 + "\n")
-                
-                if summary['full_access_rate'] >= 90:
-                    file.write("• System Status: EXCELLENT - High success rate\n")
-                    file.write("• Overall Health: System appears to be functioning well\n")
-                elif summary['full_access_rate'] >= 70:
-                    file.write("• System Status: GOOD - Acceptable performance\n")
-                    file.write("• Overall Health: Minor issues may need attention\n")
-                elif summary['full_access_rate'] >= 50:
-                    file.write("• System Status: FAIR - Significant issues present\n")
-                    file.write("• Overall Health: Multiple problems require investigation\n")
-                else:
-                    file.write("• System Status: POOR - Major connectivity issues\n")
-                    file.write("• Overall Health: Critical problems need immediate attention\n")
-                
                 # Recommendations
-                file.write("\n💡 RECOMMENDATIONS\n")
-                file.write("-" * 20 + "\n")
-                
                 recommendations = self._generate_recommendations(summary, categories)
+                file.write("💡 RECOMMENDATIONS\n")
+                file.write("-" * 20 + "\n")
                 for recommendation in recommendations:
                     file.write(f"• {recommendation}\n")
-                
-                # Technical Notes
-                file.write("\n🔧 TECHNICAL NOTES\n")
-                file.write("-" * 20 + "\n")
-                file.write("• Ping tests check basic network connectivity (ICMP)\n")
-                file.write("• Port tests verify specific service availability (TCP)\n")
-                file.write("• Timeouts may indicate network latency or filtering\n")
-                file.write("• Mixed results suggest selective connectivity issues\n")
                 
                 # Footer
                 file.write(f"\n" + "=" * 70 + "\n")
@@ -261,76 +212,131 @@ class ReportGenerator:
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         try:
-            html_content = f"""<!DOCTYPE html>
+            # Create HTML content using string concatenation to avoid f-string issues
+            html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCP Port Check Report - {current_time}</title>
+    <title>TCP Port Check Report</title>
     <style>
-        * {{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }}
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { color: #333; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 8px 12px; text-align: left; border: 1px solid #ddd; }
+        th { background-color: #007acc; color: white; }
+        .status-ok { background-color: #d4edda; }
+        .status-partial { background-color: #fff3cd; }
+        .status-error { background-color: #f8d7da; }
+        .summary { margin: 20px 0; padding: 15px; background-color: #e9ecef; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Network Connectivity Report</h1>"""
+            
+            html_content += f"""
+        <p><strong>Date:</strong> {current_time}</p>
         
-        body {{
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }}
+        <div class="summary">
+            <h3>📊 Summary</h3>
+            <p><strong>Total Hosts:</strong> {summary['total_hosts']}</p>
+            <p><strong>Ping Success:</strong> {summary['ping_ok']} ({summary['ping_success_rate']:.1f}%)</p>
+            <p><strong>Port Open:</strong> {summary['port_ok']} ({summary['port_success_rate']:.1f}%)</p>
+            <p><strong>Full Access:</strong> {summary['full_access']} ({summary['full_access_rate']:.1f}%)</p>
+        </div>
         
-        .container {{
-            max-width: 1400px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }}
+        <table>
+            <thead>
+                <tr>
+                    <th>IP Address</th>
+                    <th>Ping</th>
+                    <th>Port</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>"""
+            
+            # Generate table rows
+            for result in results:
+                parts = result.split(" | ")
+                if len(parts) >= 4:
+                    ip = parts[0].strip()
+                    ping = parts[1].strip()
+                    port = parts[2].strip()
+                    status = parts[3].strip()
+                    
+                    # Determine row class
+                    if "FULL ACCESS" in status:
+                        row_class = "status-ok"
+                    elif "PING OK" in status:
+                        row_class = "status-partial"
+                    else:
+                        row_class = "status-error"
+                    
+                    html_content += f"""
+                    <tr class="{row_class}">
+                        <td><strong>{ip}</strong></td>
+                        <td>{ping}</td>
+                        <td>{port}</td>
+                        <td>{status}</td>
+                    </tr>"""
+            
+            html_content += f"""
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="text-align: center; margin-top: 20px; color: #666;">
+        <p><strong>Report generated by TCP Port and Ping Checker v{self.report_version}</strong></p>
+        <p>Generated on {current_time} | Total records: {len(results)}</p>
+    </div>
+</body>
+</html>"""
+            
+            with open(filename, 'w', encoding=self.encoding) as file:
+                file.write(html_content)
+            
+            print(f"✅ HTML report generated: {filename}")
+            
+        except Exception as e:
+            print(f"❌ Error generating HTML report: {str(e)}")
+            raise
+    
+    def _generate_recommendations(self, summary, categories):
+        """
+        Generate actionable recommendations based on results
         
-        .header {{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }}
+        Args:
+            summary (dict): Summary statistics
+            categories (dict): Categorized results
+            
+        Returns:
+            list: List of recommendation strings
+        """
+        recommendations = []
         
-        .header h1 {{
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }}
+        # Overall health recommendations
+        if summary['full_access_rate'] < 50:
+            recommendations.append("Critical: Less than 50% success rate - immediate investigation required")
         
-        .header p {{
-            font-size: 1.1em;
-            opacity: 0.9;
-        }}
+        # Network-specific recommendations
+        if summary['ping_fail'] > summary['port_fail']:
+            recommendations.append("Focus on network infrastructure: ping failures exceed port failures")
+            recommendations.append("Check routers, switches, and network connectivity")
         
-        .content {{
-            padding: 30px;
-        }}
+        # Service-specific recommendations
+        if summary['port_fail'] > summary['ping_fail']:
+            recommendations.append("Focus on service configuration: port failures exceed ping failures")
+            recommendations.append("Verify services are running on target ports")
         
-        .summary-grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }}
+        # Success rate specific advice
+        if summary['full_access_rate'] >= 90:
+            recommendations.append("Excellent connectivity - maintain current network configuration")
+        elif summary['full_access_rate'] >= 70:
+            recommendations.append("Good connectivity - minor optimizations may help")
+        else:
+            recommendations.append("Poor connectivity - comprehensive network review recommended")
         
-        .summary-card {{
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid;
-            transition: transform 0.3s ease;
-        }}
-        
-        .summary-card:hover {{
-            transform: translateY(-5px);
-        }}
-        
-        .card-success {{ border-left-color: #28a745; }}
-        .car
+        return recommendations

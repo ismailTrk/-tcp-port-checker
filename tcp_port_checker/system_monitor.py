@@ -8,7 +8,7 @@ import time
 import psutil
 from collections import deque
 from datetime import datetime
-from config import (
+from .config import (
     MIN_WORKERS, MAX_WORKERS_MULTIPLIER, MAX_WORKERS_LIMIT,
     MONITOR_INTERVAL, THROTTLE_CPU_THRESHOLD, THROTTLE_MEMORY_THRESHOLD
 )

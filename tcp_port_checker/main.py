@@ -9,8 +9,8 @@ import signal
 import sys
 from pathlib import Path
 
-from network_checker import NetworkChecker
-from config import (
+from .network_checker import NetworkChecker
+from .config import (
     DEFAULT_PORT, DEFAULT_TIMEOUT, TXT_OUTPUT_FILE, HTML_OUTPUT_FILE,
     load_ip_addresses, create_sample_ip_file
 )

@@ -28,9 +28,9 @@ def read_requirements():
 
 setup(
     name="tcp-port-checker",
-    version="1.0.0",
+    version="1.0.2",
     author="iturkyilmazoglu",
-    author_email="your.email@example.com",
+    author_email="ismail.turkyilmazoglu@gmail.com",
     description="A powerful network connectivity analyzer with real-time system monitoring and IPv6 support",
     long_description=read_readme(),
     long_description_content_type="text/markdown",

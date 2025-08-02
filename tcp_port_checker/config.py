@@ -4,6 +4,7 @@ TCP Port and Ping Checker Application
 """
 
 import os
+import re
 
 # Default settings
 DEFAULT_PORT = 52311
@@ -90,54 +91,10 @@ def _is_valid_ip_format(ip_str):
     Returns:
         bool: True if valid format
     """
-    import re
-    
     # For domain names (e.g., google.com)
     if '.' in ip_str and not ip_str.replace('.', '').replace('-', '').isdigit():
         # Basic domain validation
-        domain_pattern = r'^[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*
-
-
-def create_sample_ip_file(filename=IP_LIST_FILE):
-    """
-    Create sample IP list file
-    
-    Args:
-        filename (str): File name to create
-    """
-    sample_content = """# TCP Port Checker - IP Addresses List
-# Write one IP address per line
-# You can use comma-separated IPs on the same line
-# Lines starting with # are treated as comments
-# Supports IPv4, IPv6, and domain names
-
-# Example usage:
-192.168.1.1
-10.0.0.1, 10.0.0.2, 10.0.0.3
-google.com
-
-# IPv6 examples:
-# 2001:db8::1
-# ::1
-# fe80::1
-# 2001:4860:4860::8888, 2001:4860:4860::8844
-
-# Add your IP addresses below:
-# 192.168.1.100
-# 10.0.1.1, 10.0.1.2
-# example.com
-
-# Domain names are also supported:
-# google.com
-# github.com
-# ipv6.google.com
-"""
-    
-    with open(filename, 'w', encoding='utf-8') as file:
-        file.write(sample_content)
-    
-    print(f"✅ Sample IP list file created: {filename}")
-    print(f"📝 Edit the file to add your IP addresses")
+        domain_pattern = r'^[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*$'
         return bool(re.match(domain_pattern, ip_str))
     
     # For IPv6 addresses (basic check)
@@ -183,11 +140,18 @@ def create_sample_ip_file(filename=IP_LIST_FILE):
 # Write one IP address per line
 # You can use comma-separated IPs on the same line
 # Lines starting with # are treated as comments
+# Supports IPv4, IPv6, and domain names
 
 # Example usage:
 192.168.1.1
 10.0.0.1, 10.0.0.2, 10.0.0.3
 google.com
+
+# IPv6 examples:
+# 2001:db8::1
+# ::1
+# fe80::1
+# 2001:4860:4860::8888, 2001:4860:4860::8844
 
 # Add your IP addresses below:
 # 192.168.1.100
@@ -197,6 +161,7 @@ google.com
 # Domain names are also supported:
 # google.com
 # github.com
+# ipv6.google.com
 """
     
     with open(filename, 'w', encoding='utf-8') as file:
